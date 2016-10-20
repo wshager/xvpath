@@ -5,9 +5,10 @@ import { _isNode } from "xvnode";
 
 export function select(node, ...paths) {
     // usually we have a sequence
-    var cur = node;
+    var cur = node, path;
     while (paths.length > 0) {
-        cur = selectImpl(cur, paths.shift());
+        path = paths.shift();
+        cur = _isSeq(cur) && !_isNode(cur) ? _mappedSelectImpl(cur,path) : selectImpl(cur, path);
     }
     cur._isNodeSeq = true;
     return cur;
@@ -15,12 +16,17 @@ export function select(node, ...paths) {
 
 export function selectAttribute(node, ...paths) {
     // usually we have a sequence
-    var cur = node;
+    var cur = node, path;
     while (paths.length > 0) {
-        cur = selectImpl(cur, paths.shift(), true);
+        path = paths.shift();
+        cur = _isSeq(cur) && !_isNode(cur) ? _mappedSelectImpl(cur,path,true) : selectImpl(cur, path,true);
     }
     cur._isNodeSeq = true;
     return cur;
+}
+
+function _mappedSelectImpl(node,path,attr) {
+    return node.map(_ => selectImpl(_,path,attr)).filter(_ => _ !== undefined);
 }
 
 function selectImpl(node, $path, attr) {
@@ -29,7 +35,6 @@ function selectImpl(node, $path, attr) {
 		// TODO can we cache this?
 		return path.call(this, node);
 	}
-    if(_isSeq(node) && !_isNode(node)) return node.map(_ => selectImpl(_,path,attr)).flatten(true);
     var attrpath = /^@/.test(path);
     if(attr && !attrpath) path = "@"+path;
     if(attrpath) attr = true;
@@ -39,7 +44,7 @@ function selectImpl(node, $path, attr) {
     };
     if (node._type == 1) {
         var ret;
-        if (!node._cache.hasOwnProperty(path)) {
+        if (!(path in node._cache)) {
             var testpath = path.replace(/^@/,"");
             if (testpath == "*") {
                 ret = node.filter(function (n) {
@@ -55,7 +60,5 @@ function selectImpl(node, $path, attr) {
             ret = node._cache[path];
         }
         return ret;
-    } else {
-        return seq();
     }
 }

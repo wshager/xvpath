@@ -1,8 +1,8 @@
 {
   "name": "xvpath",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Xpath selector for XVNode",
-  "main": "xvpath",
+  "main": "./lib/xvpath",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/wshager/xvpath#readme",
   "dependencies": {
-    "xvnode": "^0.1.0",
-    "xvseq": "^0.1.0"
+    "xvnode": "^0.1.2",
+    "xvseq": "^0.1.2"
   }
 }
