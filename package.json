@@ -1,6 +1,6 @@
 {
   "name": "xvpath",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Xpath selector for XVNode",
   "main": "./lib/xvpath",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/wshager/xvpath#readme",
   "dependencies": {
-    "xvnode": "^0.1.2",
-    "xvseq": "^0.1.2"
+    "xvnode": "^0.1.3",
+    "xvseq": "^0.1.5"
   }
 }

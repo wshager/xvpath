@@ -8,7 +8,7 @@ export function select(node, ...paths) {
     var cur = node, path;
     while (paths.length > 0) {
         path = paths.shift();
-        cur = _isSeq(cur) && !_isNode(cur) ? _mappedSelectImpl(cur,path) : selectImpl(cur, path);
+        cur = selectImpl(cur, path);
     }
     cur._isNodeSeq = true;
     return cur;
@@ -19,14 +19,10 @@ export function selectAttribute(node, ...paths) {
     var cur = node, path;
     while (paths.length > 0) {
         path = paths.shift();
-        cur = _isSeq(cur) && !_isNode(cur) ? _mappedSelectImpl(cur,path,true) : selectImpl(cur, path,true);
+        cur = selectImpl(cur, path,true);
     }
     cur._isNodeSeq = true;
     return cur;
-}
-
-function _mappedSelectImpl(node,path,attr) {
-    return node.map(_ => selectImpl(_,path,attr)).filter(_ => _ !== undefined);
 }
 
 function selectImpl(node, $path, attr) {
@@ -35,10 +31,10 @@ function selectImpl(node, $path, attr) {
 		// TODO can we cache this?
 		return path.call(this, node);
 	}
+    if(_isSeq(node) && !_isNode(node)) return node.map(_ => selectImpl(_,path,attr)).filter(_ => _ !== undefined);
     var attrpath = /^@/.test(path);
     if(attr && !attrpath) path = "@"+path;
     if(attrpath) attr = true;
-
     var typetest = function(n){
         return _isNode(n) && n._type == (attr ? 2 : 1);
     };
