@@ -1,6 +1,6 @@
 {
   "name": "xvpath",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Xpath selector for XVNode",
   "main": "./lib/xvpath",
   "scripts": {
@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/wshager/xvpath#readme",
   "dependencies": {
-    "xvnode": "^0.1.4",
-    "xvseq": "^0.1.6"
+    "xvnode": "*",
+    "xvseq": "*"
   },
   "devDependencies": {
       "babel-cli": "^6.18.0",
